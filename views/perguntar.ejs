@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="/salvarpergunta">
+                    <form method="POST" onsubmit="validaForm(event)"> <!-- action="/salvarpergunta" -->
                         <label>Título: </label><br/>
                         <input type="text" placeholder="Título" name="titulo" class="form-control"><br/>
                         <label>Descrição: </label><br/>
@@ -24,5 +24,67 @@
             </div>
         </div>
 
+        <script>
+
+            function validaForm (frm) {
+
+            frm.preventDefault()
+            /*
+            o parâmetro frm desta função significa: this.form,
+            pois a chamada da função - validaForm(this) foi
+            definida na tag form.
+            */
+
+
+            //Verifica se o campo nome foi preenchido e
+            //contém no mínimo três caracteres.
+
+            if(frm.target.titulo.value === "" || frm.target.titulo.value === null || frm.target.titulo.value.lenght < 3) {
+                //É mostrado um alerta, caso o campo esteja vazio.
+                alert("Por favor, faça alguma pergunta.");
+                //Foi definido um focus no campo.
+                frm.target.titulo.focus();
+                //o form não é enviado.
+                return false;
+            }
+
+
+            if(frm.target.descricao.value === "" || frm.target.descricao.value === null || frm.target.descricao.value.lenght < 3) {
+                //É mostrado um alerta, caso o campo esteja vazio.
+                alert("Por favor, envie a descrição da sua pergunta.");
+                //Foi definido um focus no campo.
+                frm.target.descricao.focus();
+                //o form não é enviado.
+                return false;
+            }
+
+            if(frm.target.titulo.value.indexOf('<') !== -1 || 
+            frm.target.titulo.value.indexOf('>') !== -1 ||
+            frm.target.titulo.value.indexOf('/') !== -1 ||
+
+            frm.target.descricao.value.indexOf('<') !== -1 || 
+            frm.target.descricao.value.indexOf('>') !== -1 ||
+            frm.target.descricao.value.indexOf('/') !== -1) {
+                //É mostrado um alerta, caso o campo esteja vazio.
+                alert("Por favor, não use caracteres especiais.");
+                
+                frm.target.titulo.value = ""
+            
+                frm.target.descricao.value = ""
+
+                //Foi definido um focus no campo.
+                frm.target.psw.focus();
+                //o form não é enviado.
+                return false;
+            }
+
+            else {
+                
+                frm.target.action='/salvarpergunta';
+                frm.target.method='POST';
+                frm.target.submit();
+            }
+        }
+        </script>
     <%- include('partials/footer.ejs') %>
 </html>

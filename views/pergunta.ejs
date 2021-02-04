@@ -10,7 +10,7 @@
 
         <hr>
 
-        <form method="POST" action="/responder">
+        <form method="POST" onsubmit="validaForm(event)" id="pergunta">
             <h3>Responda</h3>
 
             <label>Resposta: </label>
@@ -37,4 +37,52 @@
         <% })%>
     
     </div>
+    <script>
+
+        function validaForm (frm) {
+
+        frm.preventDefault()
+        /*
+        o parâmetro frm desta função significa: this.form,
+        pois a chamada da função - validaForm(this) foi
+        definida na tag form.
+        */
+
+
+        //Verifica se o campo nome foi preenchido e
+        //contém no mínimo três caracteres.
+
+        if(frm.target.corpo.value === "" || frm.target.corpo.value === null || frm.target.corpo.value.lenght < 3) {
+            //É mostrado um alerta, caso o campo esteja vazio.
+            alert("Por favor, responda algo.");
+            //Foi definido um focus no campo.
+            frm.target.corpo.focus();
+            //o form não é enviado.
+            return false;
+        }
+
+        if(frm.target.corpo.value.indexOf('<') !== -1 || 
+        frm.target.corpo.value.indexOf('>') !== -1 ||
+        frm.target.corpo.value.indexOf('/')) {
+            //É mostrado um alerta, caso o campo esteja vazio.
+            alert("Por favor, não use caracteres especiais.");
+            
+            frm.target.titulo.value = ""
+
+            frm.target.descricao.value = ""
+
+            //Foi definido um focus no campo.
+            frm.target.psw.focus();
+            //o form não é enviado.
+            return false;
+        }
+
+        else {
+            
+            frm.target.action='/responder';
+            frm.target.method='POST';
+            frm.target.submit();
+        }
+        }
+    </script>
 <%- include('partials/footer.ejs') %>
